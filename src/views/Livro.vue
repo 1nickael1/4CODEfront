@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     getLivro() {
-      api.get(`livros/${this.id}`).then(response => {
+      api.get(`livros/livro/${this.id}`).then(response => {
         this.Livro = response.data;
       });
     }

@@ -1,8 +1,13 @@
 <template>
+<div>
   <form>
     <input name="titulo" id="busca" type="text" v-model="busca" placeholder="Buscar:">
     <input type="submit" id="lupa" value="Buscar" @click.prevent="buscarLivros">
   </form>
+  <div v-if="busca">
+    {{busca}}
+  </div>
+  </div>
 </template>
 
 <script>
@@ -14,7 +19,6 @@ export default {
       busca: ""
     };
   },
-  //pesquisar sobra busca com mongoose ou mongodb
   methods: {
     buscarLivros() {
       api.get("/livros/search").then(response => {
