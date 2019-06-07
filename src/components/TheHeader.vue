@@ -4,14 +4,22 @@
       <router-link to="/" class="logo">
         <img src="@/assets/logo.svg" alt="4CODE">
       </router-link>
-      <router-link class="btn" to="/login">Login / Criar conta</router-link>
+      <router-link v-if="$store.state.login" class="btn" to="/usuario">
+        {{ nome }}
+      </router-link>
+      <router-link v-else class="btn" to="/login">Login / Criar conta</router-link>
     </nav>
   </header>
 </template>
 
 <script>
 export default {
-  name: "TheHeader"
+  name: "TheHeader",
+  computed: {
+    nome() {
+      return this.$store.state.usuario.email.replace(/ .*/, "");
+    }
+  }
 };
 </script>
 

@@ -1,6 +1,7 @@
 <template>
   <section class="livros-container">
-    <div v-if="Livros" class="livros">
+    <transition mode="out-in">
+    <div v-if="Livros" class="livros" key="livros">
       <div class="livro" v-for="livro in Livros" :key="livro._id">
         <router-link :to='{name: "livro", params: {id: livro._id}}'>
           <h2 class="titulo">{{ livro.titulo }}</h2>
@@ -10,15 +11,20 @@
       </div>
       <LivrosPaginar :LivrosTotal="LivrosTotal" :LivrosPorPagina="LivrosPorPagina"/>
     </div>
-    <div v-else-if="Livros && Livros.lenght == 0">
+    <div v-else-if="Livros && Livros.lenght == 0" key="sem-resultado">
       <p class="sem-resultados">Busca sem resultados.</p>
     </div>
+    <div v-else>
+      <PaginaCarregando key="carregando" />
+    </div>
+    </transition>
   </section>
 </template>
 
 <script>
 import LivrosPaginar from "@/components/LivrosPaginar.vue";
 import { api } from "@/services.js";
+//import { setTimeout } from 'timers';
 //import { serialize } from "@/helpers.js";
 
 export default {
@@ -41,10 +47,14 @@ export default {
   },
   methods: {
     getLivros() {
-      api.get(this.url).then(response => {
+      this.Livros = null;
+      window.setTimeout(() => {
+        api.get(this.url).then(response => {
         this.LivrosTotal = Number(response.data.length);
         this.Livros = response.data;
       });
+      }, 500)
+      
     }
   },
   watch: {

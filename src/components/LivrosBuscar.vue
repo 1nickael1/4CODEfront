@@ -5,7 +5,6 @@
     <input type="submit" id="lupa" value="Buscar" @click.prevent="buscarLivros">
   </form>
   <div v-if="busca">
-    {{busca}}
   </div>
   </div>
 </template>
