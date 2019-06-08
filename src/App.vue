@@ -129,4 +129,21 @@ textarea:focus {
 .v-leave-active {
   transition: all .3s
 }
+
+/*
+li {
+  display: inline-block;
+}
+
+li a {
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin: 4px;
+}
+
+li a.router-link-exact-active {
+  background: #87f;
+  color: #fff;
+}
+*/
 </style>

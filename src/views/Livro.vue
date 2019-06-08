@@ -19,7 +19,7 @@ export default {
   props: ["id"],
   data() {
     return {
-      Livro: null
+      Livro: null,
     };
   },
   methods: {

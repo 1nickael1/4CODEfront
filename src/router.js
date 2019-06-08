@@ -4,6 +4,8 @@ import Home from "./views/Home.vue";
 import Livro from "./views/Livro.vue";
 import Login from "./views/Login.vue";
 import Usuario from "./views/usuario/Usuario.vue";
+import UsuarioLivros from "./views/usuario/UsuarioLivros.vue";
+import UsuarioEditar from "./views/usuario/UsuarioEditar.vue";
 
 Vue.use(Router);
 
@@ -29,8 +31,19 @@ export default new Router({
     },
     {
       path: "/usuario",
-      name: "usuario",
       component: Usuario,
+      children: [
+        {
+          path: "",
+          name: "usuario",
+          component: UsuarioLivros
+        },
+        {
+          path: "usuario-editar",
+          name: "usuario-editar",
+          component: UsuarioEditar
+        }
+      ]
     },
   ],
   scrollBehavior() {

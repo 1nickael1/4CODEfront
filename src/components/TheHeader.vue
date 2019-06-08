@@ -17,7 +17,7 @@ export default {
   name: "TheHeader",
   computed: {
     nome() {
-      return this.$store.state.usuario.email.replace(/ .*/, "");
+      return this.$store.state.usuario.email.replace(/@.*/, "");
     }
   }
 };
