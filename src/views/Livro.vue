@@ -4,8 +4,13 @@
       <div class="info">
         <h1 class="titulo">{{ Livro.titulo }}</h1>
         <p class="descricao">{{ Livro.descricao }}</p>
-        <p>Páginas: {{ Livro.paginas }}</p>
-        <button class="btn">Adicionar</button>
+        <div class="ajuste1">
+          <LivroAdicionar :idPai="idFilho"/>
+          <!--<LivroRemover class="ajuste2" :idPai="idFilho"/> -->
+          <button class="btn ajuste2" @click.prevent="remover">Remover</button>
+          <p>ID usuario: {{idUsuario}}</p>
+          <p>ID livro: {{idLivro}}</p>
+        </div>
       </div>
     </div>
   </section>
@@ -13,6 +18,8 @@
 
 <script>
 import { api } from "@/services.js";
+import LivroAdicionar from "@/components/LivroAdicionar.vue";
+//import LivroRemover from "@/components/LivroRemover.vue";
 
 export default {
   name: "Livros",
@@ -20,6 +27,9 @@ export default {
   data() {
     return {
       Livro: null,
+      idFilho: this.id,
+      idUsuario: this.$store.state.usuario.id,
+      idLivro: this.id
     };
   },
   methods: {
@@ -27,10 +37,18 @@ export default {
       api.get(`livros/livro/${this.id}`).then(response => {
         this.Livro = response.data;
       });
+    },
+    remover() {
+        api.delete(`/livros/remove/${this.idUsuario}/remove/${this.idLivro}`, {
+              data: { id: this.idLivro }
+            });
     }
   },
   created() {
     this.getLivro();
+  },
+  components: {
+    LivroAdicionar
   }
 };
 </script>
@@ -59,5 +77,13 @@ export default {
 .btn {
   margin-top: 60px;
   width: 200px;
+}
+
+.ajuste1 {
+  display: flex;
+}
+
+.ajuste2 {
+  margin-left: 20px;
 }
 </style>

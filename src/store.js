@@ -32,7 +32,7 @@ export default new Vuex.Store({
   },
   actions: {
     getUsuarioLivros(context) {
-      api.get(`/users/livros/${context.state.usuario.id}`)
+      return api.get(`/users/livros/${context.state.usuario.id}`)
     },
     logarUsuario(context, payload) {
       context.commit("UPDATE_USUARIO");
@@ -41,6 +41,8 @@ export default new Vuex.Store({
     },
     criarUsuario(context, payload) {
       context.commit("UPDATE_USUARIO")
+      //context.commit("SALVAR_USUARIO"),
+      //context.commit("UPDATE_ID")
       return api.post('/users/create', payload)
     },
     salvarUsuario(context, payload) {

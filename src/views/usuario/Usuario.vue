@@ -16,7 +16,6 @@
     <transition mode="out-in">
       <router-view></router-view>
     </transition>
-    {{ dados }}
   </section>
 </template>
 
@@ -27,7 +26,6 @@ export default {
     deslogar() {
       this.$store.dispatch("deslogarUsuario");
       this.$router.push("/login");
-      this.$router.push("/usuario");
     }/*,
     async buscarLivros() {
       try {

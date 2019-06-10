@@ -31,7 +31,8 @@ export default {
         await this.$store
           .dispatch("logarUsuario", this.$store.state.usuario)
           .then(response => {
-            this.dados = response.data;
+            this.dados = response.data,
+            this.id = response.data.user._id;
           });
 
         this.$router.push("/usuario");
@@ -46,6 +47,14 @@ export default {
       },
       set(value) {
         this.$store.commit("SALVAR_USUARIO", { dados: value });
+      }
+    },
+    id: {
+      get(){
+        return this.$store.state.usuario.id;
+      },
+      set(value){
+        this.$store.commit("UPDATE_ID", value);
       }
     }
   }
