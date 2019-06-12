@@ -3,10 +3,16 @@
     <nav class="sidenav">
       <ul>
         <li>
-          <router-link :to="{name: 'usuario'}" @click.prevent="buscarLivros">Livros</router-link>
+          <router-link :to="{name: 'usuarios'}">Usuários</router-link>
         </li>
         <li>
-          <router-link :to="{name: 'usuario-editar'}">Editar Usuário</router-link>
+          <router-link :to="{name: 'LivroCriar'}">Criar Livros</router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'livro-remover'}">Remover Livro</router-link>
+        </li>
+        <li>
+        <router-link :to="{name: 'livro-editar'}">Editar Livro</router-link>
         </li>
         <li>
           <button @click="deslogar">Deslogar</button>
@@ -41,14 +47,14 @@ export default {
 <style scoped>
 .usuario {
   display: grid;
-  grid-template-columns: minmax(140px, 200px) 1fr;
-  max-width: 900px;
+  grid-template-columns: minmax(140px, 160px) 1fr;
+  max-width: 1000px;
   margin: 40px auto;
-  grid-gap: 30px;
+  grid-gap: 40px;
   padding: 20px;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   .usuario {
     grid-template-columns: 1fr;
     margin: 0px auto;

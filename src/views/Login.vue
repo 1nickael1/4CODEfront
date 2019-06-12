@@ -22,6 +22,7 @@ export default {
   name: "Login",
   data() {
     return {
+      erro: ""
     };
   },
   components: {
@@ -37,7 +38,9 @@ export default {
             this.id = response.data.user._id;
           });
         this.$router.push("/usuario");
-      } catch (err) {}
+      } catch (err) {
+        this.erro = err
+      }
     }
   },
   computed: {

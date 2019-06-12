@@ -5,11 +5,13 @@
       <div class="livro" v-for="livro in Livros" :key="livro._id">
         <router-link :to='{name: "livro", params: {id: livro._id}}'>
           <h2 class="titulo">{{ livro.titulo }}</h2>
-          <p class="descricao">{{ livro.descricao }}</p>
+          <p class="descricao">{{ 
+            livro.descricao.length < 300 ? livro.descricao : livro.descricao.substring(0,300) + "..." 
+            }}</p>
           <p>Páginas: {{ livro.paginas }}</p>
         </router-link>
       </div>
-      <LivrosPaginar :LivrosTotal="LivrosTotal" :LivrosPorPagina="LivrosPorPagina"/>
+      <!--<LivrosPaginar :LivrosTotal="LivrosTotal" :LivrosPorPagina="LivrosPorPagina"/>-->
     </div>
     <div v-else-if="Livros && Livros.lenght == 0" key="sem-resultado">
       <p class="sem-resultados">Busca sem resultados.</p>
@@ -22,7 +24,6 @@
 </template>
 
 <script>
-import LivrosPaginar from "@/components/LivrosPaginar.vue";
 import { api } from "@/services.js";
 //import { setTimeout } from 'timers';
 //import { serialize } from "@/helpers.js";
@@ -30,7 +31,6 @@ import { api } from "@/services.js";
 export default {
   name: "LivrosLista",
   components: {
-    LivrosPaginar
   },
   data() {
     return {
@@ -48,12 +48,10 @@ export default {
   methods: {
     getLivros() {
       this.Livros = null;
-      window.setTimeout(() => {
         api.get(this.url).then(response => {
         this.LivrosTotal = Number(response.data.length);
         this.Livros = response.data;
       });
-      }, 500)
       
     }
   },

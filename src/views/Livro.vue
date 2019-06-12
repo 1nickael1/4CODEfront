@@ -6,10 +6,7 @@
         <p class="descricao">{{ Livro.descricao }}</p>
         <div class="ajuste1">
           <LivroAdicionar :idPai="idFilho"/>
-          <!--<LivroRemover class="ajuste2" :idPai="idFilho"/> -->
-          <button class="btn ajuste2" @click.prevent="remover">Remover</button>
-          <p>ID usuario: {{idUsuario}}</p>
-          <p>ID livro: {{idLivro}}</p>
+          <LivroRemover class="ajuste2" :idPai="idFilho"/>
         </div>
       </div>
     </div>
@@ -19,7 +16,7 @@
 <script>
 import { api } from "@/services.js";
 import LivroAdicionar from "@/components/LivroAdicionar.vue";
-//import LivroRemover from "@/components/LivroRemover.vue";
+import LivroRemover from "@/components/LivroRemover.vue";
 
 export default {
   name: "Livros",
@@ -37,18 +34,15 @@ export default {
       api.get(`livros/livro/${this.id}`).then(response => {
         this.Livro = response.data;
       });
-    },
-    remover() {
-        api.delete(`/livros/remove/${this.idUsuario}/remove/${this.idLivro}`, {
-              data: { id: this.idLivro }
-            });
     }
+    
   },
   created() {
     this.getLivro();
   },
   components: {
-    LivroAdicionar
+    LivroAdicionar,
+    LivroRemover
   }
 };
 </script>

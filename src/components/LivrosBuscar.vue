@@ -1,11 +1,21 @@
 <template>
-<div>
-  <form>
-    <input name="titulo" id="busca" type="text" v-model="busca" placeholder="Buscar:">
-    <input type="submit" id="lupa" value="Buscar" @click.prevent="buscarLivros">
-  </form>
-  <div v-if="busca">
-  </div>
+  <div>
+    <form>
+      <input name="titulo" id="busca" type="text" v-model="buscar" placeholder="Buscar:">
+      <input type="submit" id="lupa" value="titulo" @click.prevent="buscarLivros">
+    </form>
+    <!-- <p>tentando pesquisar por: {{buscar}}</p> -->
+      <section class="livros-container">
+    <transition mode="out-in">
+        <div v-if="busca" class="livros">
+          <div class="livro" v-for="livro in busca" :key="livro._id">
+            <router-link :to='{name: "livro", params: {id: livro._id}}'>
+              <h2 class="titulo">{{ livro.titulo }}</h2>
+            </router-link>
+          </div>
+        </div>
+    </transition>
+      </section>
   </div>
 </template>
 
@@ -15,14 +25,17 @@ import { api } from "@/services.js";
 export default {
   data() {
     return {
-      busca: ""
+      busca: "",
+      buscar: ""
     };
   },
   methods: {
     buscarLivros() {
-      api.get("/livros/search").then(response => {
-        this.busca = response.data;
-      });
+      api
+        .post("/livros/search", { titulo: `${this.buscar}` })
+        .then(response => {
+          this.busca = response.data;
+        });
     }
   }
 };
@@ -58,4 +71,36 @@ form {
   right: 10px;
   box-shadow: none;
 }
+
+.livros-container {
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.livros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  margin: 30px;
+}
+
+.livro {
+  box-shadow: 0 4px 8px rgba(30, 60, 90, 0.1);
+  padding: 10px;
+  background: #fff;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.livro:hover {
+  box-shadow: 0 6px 12px rgba(30, 60, 90, 0.2);
+  transform: scale(1.1);
+  position: relative;
+  z-index: 1;
+}
+
+.titulo {
+  margin-bottom: 10px;
+}
+
 </style>

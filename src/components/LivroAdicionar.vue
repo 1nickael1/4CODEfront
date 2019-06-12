@@ -1,5 +1,8 @@
 <template>
   <section>
+      <div v-if="status" class="btn">
+          <p>{{status}}</p>
+      </div>
     <button class="btn" @click.prevent="adicionar">Adicionar</button>
   </section>
 </template>
@@ -13,13 +16,21 @@ export default {
     data() {
         return {
             idUsuario: this.$store.state.usuario.id,
-            idLivro: this.idPai
+            idLivro: this.idPai,
+            status: ""
         }
     },
     methods: {
-        adicionar() {
-            api.post(`/livros/add/${this.idUsuario}`, {id: `${this.idLivro}`}
-            )
+        async adicionar() {
+            try {
+                api.post(`/livros/add/${this.idUsuario}`, {id: `${this.idLivro}`}).then(() => {
+                    this.$router.push("/usuario")
+
+                })
+                //this.status = "Livro adicionado com sucesso!"
+            } catch (err){
+                this.status = err
+            }
         }
     }
 };

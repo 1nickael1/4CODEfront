@@ -1,15 +1,22 @@
 <template>
   <section class="livros-container">
     <transition mode="out-in">
-    <div v-if="Livros" class="livros" key="livros">
+    <div v-if="Livros" class="livros" key="LivroDel">
       <div class="livro" v-for="livro in Livros" :key="livro._id">
-        <router-link :to='{name: "livro", params: {id: livro._id}}'>
+        <!--<router-link :to='{name: "LivroDel", params: {id: livro._id}}' :idPai="idFilho">
           <h2 class="titulo">{{ livro.titulo }}</h2>
-          <p class="descricao">{{ 
-            livro.descricao.length < 200 ? livro.descricao : livro.descricao.substring(0,200) + "..." 
-            }}</p>
-        </router-link>
+          <p class="descricao">{{ livro.descricao }}</p>
+          <p>Páginas: {{ livro.paginas }}</p>
+        </router-link>-->
+        <button class="btn" @click.prevent="excluir(livro._id)">
+        <h2 class="titulo">{{ livro.titulo }}</h2>
+          <p class="descricao">{{
+            livro.descricao.length < 50 ? livro.descricao : livro.descricao.substring(0,50) + "..." 
+           }}</p>
+          <p>Páginas: {{ livro.paginas }}</p>
+        </button>
       </div>
+      <!--<LivrosPaginar :LivrosTotal="LivrosTotal" :LivrosPorPagina="LivrosPorPagina"/>-->
     </div>
     <div v-else-if="Livros && Livros.lenght == 0" key="sem-resultado">
       <p class="sem-resultados">Busca sem resultados.</p>
@@ -23,26 +30,42 @@
 
 <script>
 import { api } from "@/services.js";
+//import { setTimeout } from 'timers';
+//import { serialize } from "@/helpers.js";
 
 export default {
+  name: "LivrosLista",
+  components: {
+  },
   data() {
     return {
       Livros: null,
-      id: this.$store.state.usuario.id
+      LivrosPorPagina: 9,
+      LivrosTotal: 0,
+      idFilho: this.id
     };
   },
   computed: {
     url() {
       //const query = serialize(this.$route.query);
-      return `/users/livros/${this.id}`;
+      return `/livros`;
     }
   },
   methods: {
     getLivros() {
       this.Livros = null;
+      
         api.get(this.url).then(response => {
-          this.Livros = response.data;
-        });
+        this.LivrosTotal = Number(response.data.length);
+        this.Livros = response.data;
+      });
+      
+    },
+    excluir(id) {
+        api.get(`livros/delete/${id}`).then(() => {
+            //this.$router.replace("/admin/user/")
+            this.getLivros()
+        })
     }
   },
   watch: {
@@ -64,7 +87,7 @@ export default {
 
 .livros {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
   margin: 30px;
 }
@@ -79,7 +102,7 @@ export default {
 
 .livro:hover {
   box-shadow: 0 6px 12px rgba(30, 60, 90, 0.2);
-  transform: scale(1.1);
+  /*transform: scale(1.1);*/
   position: relative;
   z-index: 1;
 }

@@ -1,6 +1,11 @@
 <template>
   <section>
+    <div class="btn" v-if="status">
+      <p>{{status}}</p>
+    </div>
     <button class="btn" @click.prevent="remover">Remover</button>
+    <!-- <p>ID usuario: {{idUsuario}}</p>
+    <p>ID livro: {{idLivro}}</p> -->
   </section>
 </template>
 
@@ -13,19 +18,20 @@ export default {
   data() {
     return {
       idUsuario: this.$store.state.usuario.id,
-      idLivro: idPai,
-      resultado: idLivro
+      idLivro: this.idPai,
+      status: ""
     };
   },
   methods: {
     async remover() {
         try {
-            api.delete(`/livros/remove/${this.idUsuario}`, {
-              data: { id: resultado }
+            api.get(`/livros/remove/${this.idUsuario}/remove/${this.idLivro}`, {
+              data: { id: this.idLivro }
             });
 
+            this.$router.push("/")
         } catch (err) {
-            console.log(err)
+            this.status = err
         }
     }
   }

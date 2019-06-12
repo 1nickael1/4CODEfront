@@ -6,6 +6,13 @@ import Login from "./views/Login.vue";
 import Usuario from "./views/usuario/Usuario.vue";
 import UsuarioLivros from "./views/usuario/UsuarioLivros.vue";
 import UsuarioEditar from "./views/usuario/UsuarioEditar.vue";
+import Admin from "./views/admin/Admin.vue";
+import LivroCriar from "./views/admin/LivroCriar.vue";
+import LivroRemover from "./views/admin/LivroRemover.vue";
+import LivroEditar from "./views/admin/LivroEditar.vue";
+import LivroEdit from "./views/admin/LivroEdit.vue";
+import Usuarios from "./views/admin/Usuarios.vue";
+
 
 Vue.use(Router);
 
@@ -42,6 +49,38 @@ export default new Router({
           path: "usuario-editar",
           name: "usuario-editar",
           component: UsuarioEditar
+        }
+      ]
+    },
+    {
+      path: "/admin/user",
+      component: Admin,
+      children: [
+        {
+          path: "",
+          name: "LivroCriar",
+          component: LivroCriar
+        },
+        {
+          path: "livro-remover",
+          name: "livro-remover",
+          component: LivroRemover
+        },
+        {
+          path: "livro-editar",
+          name: "livro-editar",
+          component: LivroEditar
+        },
+        {
+          path: "livro-edit/:id",
+          name: "livro-edit",
+          component: LivroEdit,
+          props: true
+        },
+        {
+          path: "usuarios",
+          name: "usuarios",
+          component: Usuarios
         }
       ]
     },

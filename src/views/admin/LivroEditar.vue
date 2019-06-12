@@ -1,13 +1,14 @@
 <template>
   <section class="livros-container">
     <transition mode="out-in">
-    <div v-if="Livros" class="livros" key="livros">
+    <div v-if="Livros" class="livros" key="LivroDel">
       <div class="livro" v-for="livro in Livros" :key="livro._id">
-        <router-link :to='{name: "livro", params: {id: livro._id}}'>
+        <router-link :to='{name: "livro-edit", params: {id: livro._id}}'>
           <h2 class="titulo">{{ livro.titulo }}</h2>
           <p class="descricao">{{ 
-            livro.descricao.length < 200 ? livro.descricao : livro.descricao.substring(0,200) + "..." 
+            livro.descricao.length < 100 ? livro.descricao : livro.descricao.substring(0,100) + "..." 
             }}</p>
+          <p>Páginas: {{ livro.paginas }}</p>
         </router-link>
       </div>
     </div>
@@ -25,24 +26,34 @@
 import { api } from "@/services.js";
 
 export default {
+  name: "LivrosLista",
+  components: {
+  },
   data() {
     return {
       Livros: null,
-      id: this.$store.state.usuario.id
+      LivrosPorPagina: 9,
+      LivrosTotal: 0
     };
   },
   computed: {
     url() {
-      //const query = serialize(this.$route.query);
-      return `/users/livros/${this.id}`;
+      return `/livros`;
     }
   },
   methods: {
     getLivros() {
       this.Livros = null;
         api.get(this.url).then(response => {
-          this.Livros = response.data;
-        });
+        this.LivrosTotal = Number(response.data.length);
+        this.Livros = response.data;
+      });
+      
+    },
+    excluir(id) {
+        api.get(`livros/delete/${id}`).then(() => {
+            this.$router.replace("/admin/user/")
+        })
     }
   },
   watch: {
@@ -64,7 +75,7 @@ export default {
 
 .livros {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 30px;
   margin: 30px;
 }
