@@ -4,6 +4,7 @@
       <div class="info">
         <h1 class="titulo">{{ Livro.titulo }}</h1>
         <p class="descricao">{{ Livro.descricao }}</p>
+        <p class="descricao">{{ Livro.paginas }} páginas</p>
         <div class="ajuste1">
           <LivroAdicionar :idPai="idFilho"/>
           <LivroRemover class="ajuste2" :idPai="idFilho"/>
@@ -30,10 +31,15 @@ export default {
     };
   },
   methods: {
-    getLivro() {
-      api.get(`livros/livro/${this.id}`).then(response => {
-        this.Livro = response.data;
-      });
+    async getLivro() {
+      try {
+        api.get(`livros/livro/${this.id}`).then(response => {
+          this.Livro = response.data;
+        });
+
+      } catch (err){
+        return '<h1>Sem autorização</h1>'
+      }
     }
     
   },

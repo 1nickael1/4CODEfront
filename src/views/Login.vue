@@ -1,6 +1,9 @@
 <template>
   <section class="login">
     <h1>Login</h1>
+    <div v-if="status">
+      <p class="btn">{{status}}</p>
+    </div>
     <form>
       <label for="email">Email</label>
       <input type="email" name="email" id="email" v-model="loginEmail">
@@ -22,7 +25,7 @@ export default {
   name: "Login",
   data() {
     return {
-      erro: ""
+      status: ""
     };
   },
   components: {
@@ -39,7 +42,7 @@ export default {
           });
         this.$router.push("/usuario");
       } catch (err) {
-        this.erro = err
+        this.status = "Erro ao logar!"
       }
     }
   },
@@ -114,4 +117,5 @@ form {
   color: #87f;
   text-decoration: underline;
 }
+
 </style>
